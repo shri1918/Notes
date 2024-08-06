@@ -1,0 +1,6 @@
+.important-header {
+  color: red !important; /* Force the color change */
+}
+.header{
+  color: black !important;
+}
