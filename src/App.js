@@ -10,13 +10,13 @@ const App = () => {
   const [notes, setNotes] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/notes')
+    axios.get('https://notes-uku4.onrender.com/notes')
       .then(response => setNotes(response.data.NotesReact))
       .catch(error => console.error(error));
   }, []);
 
   const updateNoteImportance = (id, newImportance) => {
-    axios.post('http://localhost:5000/updateImportance', { id, newImportance })
+    axios.post('https://notes-uku4.onrender.com/updateImportance', { id, newImportance })
       .then(response => setNotes(response.data.NotesReact))
       .catch(error => console.error(error));
   };
