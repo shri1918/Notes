@@ -9,7 +9,7 @@ import ReactNativeNotes from './component/ReactNativeNotes';
 import Login from './Login';
 import Main from './Main';
 import ProtectedRoute from './ProtectedRoute';
-import apiConfig from '../server/apiConfig';
+import apiConfig from './apiConfig';
 
 const App = () => {
   const [notes, setNotes] = useState([]);

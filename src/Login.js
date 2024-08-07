@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import apiConfig from '../server/apiConfig';
+import apiConfig from './apiConfig';
 
 export default function Login() {
   const [username, setUsername] = useState('');
