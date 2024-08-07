@@ -4,7 +4,7 @@ module.exports = {
       "id": 1,
       "title": "What is React?",
       "content": "React is a JavaScript library created by Facebook. React is a User Interface (UI) library. React is a tool for building UI components.",
-      "imp": "Imp"
+      "imp": "V-Imp"
     },
     {
       "id": 2,
@@ -23,21 +23,21 @@ module.exports = {
       "title": "What are components in React?",
       "content": "Components are the building blocks of a React application. They describe a part of the user interface and can be composed together to build complex UIs. Components can be either class-based or functional.",
       "example": "\n          // Functional Component\n          function Greeting(props) {\n            return <h1>Hello, {props.name}</h1>;\n          }\n  \n          // Class Component\n          class Greeting extends React.Component {\n            render() {\n              return <h1>Hello, {this.props.name}</h1>;\n            }\n          }\n        ",
-      "imp": "Imp"
+      "imp": "V-Imp"
     },
     {
       "id": 5,
       "title": "What is a state in React?",
       "content": "State is an object that holds some information that may change over the lifetime of the component. It is managed within the component and can influence what gets rendered.",
       "example": "\n          function Counter() {\n            const [count, setCount] = React.useState(0);\n            \n            return (\n              <div>\n                <p>You clicked {count} times</p>\n                <button onClick={() => setCount(count + 1)}>Click me</button>\n              </div>\n            );\n          }\n        ",
-      "imp": "Imp"
+      "imp": "V-Imp"
     },
     {
       "id": 6,
       "title": "What is a prop in React?",
       "content": "Props, short for properties, are read-only attributes that are passed from a parent component to a child component. They are used to pass data and event handlers down to child components.",
       "example": "\n          function Welcome(props) {\n            return <h1>Hello, {props.name}</h1>;\n          }\n  \n          function App() {\n            return <Welcome name=\"Sara\" />;\n          }\n        ",
-      "imp": "Imp"
+      "imp": "V-Imp"
     },
     {
       "id": 7,
@@ -58,14 +58,14 @@ module.exports = {
       "title": "What are hooks in React?",
       "content": "Hooks are functions that let you use state and other React features in functional components. Some common hooks include useState, useEffect, and useContext.",
       "example": "\n          // useState Hook\n          function Example() {\n            const [count, setCount] = React.useState(0);\n            \n            return (\n              <div>\n                <p>You clicked {count} times</p>\n                <button onClick={() => setCount(count + 1)}>Click me</button>\n              </div>\n            );\n          }\n  \n          // useEffect Hook\n          function DataFetcher() {\n            const [data, setData] = React.useState(null);\n  \n            React.useEffect(() => {\n              fetch('https://api.example.com/data')\n                .then(response => response.json())\n                .then(data => setData(data));\n            }, []); // Empty dependency array means this effect runs once after the initial render\n            \n            return <div>{data ? `Data: ${data}` : 'Loading...'}</div>;\n          }\n        ",
-      "imp": "Imp"
+      "imp": "V-Imp"
     },
     {
       "id": 10,
       "title": "What is the useEffect hook?",
       "content": "useEffect is a hook that lets you perform side effects in functional components. It takes a function as an argument, which can contain any side effect logic, such as data fetching, subscriptions, or manually changing the DOM.",
       "example": "\n          function Example() {\n            const [count, setCount] = React.useState(0);\n  \n            React.useEffect(() => {\n              document.title = `You clicked ${count} times`;\n            }, [count]); // This effect runs whenever 'count' changes\n            \n            return (\n              <div>\n                <p>You clicked {count} times</p>\n                <button onClick={() => setCount(count + 1)}>Click me</button>\n              </div>\n            );\n          }\n        ",
-      "imp": "Imp"
+      "imp": "V-Imp"
     },
     {
       "id": 18,
@@ -86,7 +86,7 @@ module.exports = {
       "title": "Call an API GET method using Axios and the fetch method in React.",
       "content": "To call an API GET method using Axios and the fetch method, you can use the useEffect hook to make the API call when the component mounts. Here's an example:",
       "example": "\n          import React, { useEffect, useState } from 'react';\n          import axios from 'axios';\n      \n          function FetchData() {\n            const [data, setData] = useState([]);\n      \n            // Using Axios\n            useEffect(() => {\n              axios.get('https://api.example.com/data')\n                .then(response => setData(response.data))\n                .catch(error => console.error('Error fetching data with Axios:', error));\n            }, []);\n      \n            // Using Fetch\n            useEffect(() => {\n              fetch('https://api.example.com/data')\n                .then(response => response.json())\n                .then(data => setData(data))\n                .catch(error => console.error('Error fetching data with Fetch:', error));\n            }, []);\n      \n            return (\n              <div>\n                <ul>\n                  {data.map((item, index) => (\n                    <li key={index}>{item.name}</li>\n                  ))}\n                </ul>\n              </div>\n            );\n          }\n      \n          export default FetchData;\n          ",
-      "imp": "Imp"
+      "imp": "V-Imp"
     },
     {
       "id": 13,
@@ -122,6 +122,58 @@ module.exports = {
       "content": "To call an API when the component is visible on the screen, you can use the Intersection Observer API along with the useEffect hook. Here's an example:\n          ",
       "example": "\n          import React, { useEffect, useRef, useState } from 'react';\n      \n          function LazyLoadComponent() {\n            const [data, setData] = useState(null);\n            const ref = useRef();\n      \n            useEffect(() => {\n              const observer = new IntersectionObserver(\n                ([entry]) => {\n                  if (entry.isIntersecting) {\n                    fetch('https://api.example.com/data')\n                      .then(response => response.json())\n                      .then(data => setData(data))\n                      .catch(error => console.error('Error fetching data:', error));\n                    observer.disconnect();\n                  }\n                },\n                { threshold: 0.1 }\n              );\n      \n              if (ref.current) {\n                observer.observe(ref.current);\n              }\n      \n              return () => observer.disconnect();\n            }, []);\n      \n            return (\n              <div ref={ref}>\n                {data ? <div>Data: {JSON.stringify(data)}</div> : <div>Loading...</div>}\n              </div>\n            );\n          }\n      \n          export default LazyLoadComponent;\n          ",
       "imp": "V-Imp"
+    },
+    {
+      "id": 1723011030634,
+      "title": "add in react 1",
+      "content": "content",
+      "imp": "Imp",
+      "example": "example"
+    }
+  ],
+  "NotesAngular": [
+    {
+      "id": 1723013335757,
+      "title": "angular",
+      "content": "add",
+      "imp": "Imp",
+      "example": "example"
+    },
+    {
+      "id": 1723013388459,
+      "title": "angular2",
+      "content": "add",
+      "imp": "Imp",
+      "example": "some"
+    }
+  ],
+  "NotesReactNative": [
+    {
+      "id": 1723007043472,
+      "title": "add some example qustion in react",
+      "content": "answer",
+      "imp": "V-Imp",
+      "example": "example"
+    },
+    {
+      "id": 1723007136883,
+      "title": "add some example qustion in react",
+      "content": "answer",
+      "imp": "V-Imp",
+      "example": "example"
+    },
+    {
+      "id": 1723007207896,
+      "title": "add some example qustion in react",
+      "content": "answer",
+      "imp": "Imp",
+      "example": "example"
+    }
+  ],
+  "users": [
+    {
+      "username": "admin",
+      "password": "password123"
     }
   ]
 };

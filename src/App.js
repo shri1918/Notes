@@ -1,31 +1,60 @@
-import React,{useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Dashboard from './Dashboard';
 import ReactNotes from './component/ReactNotes';
-// import data from './data/data'
 import axios from 'axios';
-// const fs = require('fs');
+import AngularNotes from './component/AngularNotes';
+import ReactNativeNotes from './component/ReactNativeNotes';
+import Login from './Login';
+import Main from './Main';
+import ProtectedRoute from './ProtectedRoute';
+
 const App = () => {
   const [notes, setNotes] = useState([]);
+  const [notesAngular, setNotesAngular] = useState([]);
+  const [notesReactNative, setNotesReactNative] = useState([]);
 
   useEffect(() => {
     axios.get('https://notes-uku4.onrender.com/notes')
-      .then(response => setNotes(response.data.NotesReact))
+      .then(response => {
+        setNotes(response.data.NotesReact);
+        setNotesAngular(response.data.NotesAngular);
+        setNotesReactNative(response.data.NotesReactNative);
+      })
       .catch(error => console.error(error));
   }, []);
 
-  const updateNoteImportance = (id, newImportance) => {
-    axios.post('https://notes-uku4.onrender.com/updateImportance', { id, newImportance })
-      .then(response => setNotes(response.data.NotesReact))
-      .catch(error => console.error(error));
+  const updateNoteImportance = (id, newImportance, arrayName) => {
+    console.log('Start UpdateNotes');
+    
+    axios.post('https://notes-uku4.onrender.com/updateImportance', { id, newImportance, arrayName })
+      .then(response => {
+        console.log('Update Importance Response:', response);
+        if (arrayName === 'React') {
+          setNotes(response.data.NotesReact);
+        } else if (arrayName === 'Angular') {
+          setNotesAngular(response.data.NotesAngular);
+        } else if (arrayName === 'ReactNative') {
+          setNotesReactNative(response.data.NotesReactNative);
+        }
+      })
+      .catch(error => {
+        console.error('Error updating importance or fetching notes:', error);
+      });
   };
+  
+
   return (
     <Router>
       <div>
         <Dashboard />
         <Routes>
-          <Route path="/reactNotes" element={<ReactNotes notes={notes} updateNoteImportance={updateNoteImportance}/>} />
+          <Route path="/" element={<ReactNotes notes={notes} updateNoteImportance={updateNoteImportance} />} />
+          <Route path="/angularNotes" element={<AngularNotes notes={notesAngular} updateNoteImportance={updateNoteImportance} />} />
+          <Route path="/reactNativeNotes" element={<ReactNativeNotes notes={notesReactNative} updateNoteImportance={updateNoteImportance} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/main" element={<ProtectedRoute><Main /></ProtectedRoute>} />
         </Routes>
       </div>
     </Router>

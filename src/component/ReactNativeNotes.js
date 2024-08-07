@@ -4,11 +4,10 @@ import '../App.css';
 import { FaStar } from "react-icons/fa";
 import { GoDot } from "react-icons/go";
 
-export default function ReactNotes({ notes, updateNoteImportance }) {
+export default function ReactNativeNotes({ notes, updateNoteImportance }) {
   const handleImportanceClick = (note) => {
     const newImportance = note.imp === 'V-Imp' ? 'Imp' : 'V-Imp';
-    updateNoteImportance(note.id, newImportance, 'React');
-    console.log('status',newImportance)
+    updateNoteImportance(note.id, newImportance, 'ReactNative');
   };
 
   return (
@@ -19,7 +18,6 @@ export default function ReactNotes({ notes, updateNoteImportance }) {
             <Accordion.Header>
               <div onClick={() => handleImportanceClick(note)} style={{ cursor: 'pointer' }} className='me-3'>
                 {note.imp === 'V-Imp' ? <FaStar/> : <GoDot/>}
-                {note.imp}
               </div>
               {note.title}
             </Accordion.Header>

@@ -4,7 +4,7 @@ import '../App.css';
 import { FaStar } from "react-icons/fa";
 import { GoDot } from "react-icons/go";
 
-export default function ReactNotes({ notes, updateNoteImportance }) {
+export default function AngularNotes({ notes, updateNoteImportance }) {
   const handleImportanceClick = (note) => {
     const newImportance = note.imp === 'V-Imp' ? 'Imp' : 'V-Imp';
     updateNoteImportance(note.id, newImportance, 'React');
