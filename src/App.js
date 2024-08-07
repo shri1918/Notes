@@ -9,6 +9,7 @@ import ReactNativeNotes from './component/ReactNativeNotes';
 import Login from './Login';
 import Main from './Main';
 import ProtectedRoute from './ProtectedRoute';
+import apiConfig from '../server/apiConfig';
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -16,7 +17,7 @@ const App = () => {
   const [notesReactNative, setNotesReactNative] = useState([]);
 
   useEffect(() => {
-    axios.get('https://notes-uku4.onrender.com/notes')
+    axios.get(`${apiConfig.baseURL}${apiConfig.endpoints.notes}`)
       .then(response => {
         setNotes(response.data.NotesReact);
         setNotesAngular(response.data.NotesAngular);
@@ -28,7 +29,7 @@ const App = () => {
   const updateNoteImportance = (id, newImportance, arrayName) => {
     console.log('Start UpdateNotes');
     
-    axios.post('https://notes-uku4.onrender.com/updateImportance', { id, newImportance, arrayName })
+    axios.post(`${apiConfig.baseURL}${apiConfig.endpoints.updateImportance}`, { id, newImportance, arrayName })
       .then(response => {
         console.log('Update Importance Response:', response);
         if (arrayName === 'React') {

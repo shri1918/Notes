@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import apiConfig from '../server/apiConfig';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -12,7 +13,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://notes-uku4.onrender.com/login', { username, password });
+      const response = await axios.post(`${apiConfig.baseURL}${apiConfig.endpoints.login}`, { username, password });
       localStorage.setItem('token', response.data.token);
       setError('');
       navigate('/main', { state: { token: response.data.token } });
