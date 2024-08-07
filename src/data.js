@@ -4,7 +4,8 @@ module.exports = {
       "id": 1,
       "title": "What is React?",
       "content": "React is a JavaScript library created by Facebook. React is a User Interface (UI) library. React is a tool for building UI components.",
-      "imp": "V-Imp"
+      "imp": "",
+      "example": "add some example "
     },
     {
       "id": 2,
@@ -122,35 +123,21 @@ module.exports = {
       "content": "To call an API when the component is visible on the screen, you can use the Intersection Observer API along with the useEffect hook. Here's an example:\n          ",
       "example": "\n          import React, { useEffect, useRef, useState } from 'react';\n      \n          function LazyLoadComponent() {\n            const [data, setData] = useState(null);\n            const ref = useRef();\n      \n            useEffect(() => {\n              const observer = new IntersectionObserver(\n                ([entry]) => {\n                  if (entry.isIntersecting) {\n                    fetch('https://api.example.com/data')\n                      .then(response => response.json())\n                      .then(data => setData(data))\n                      .catch(error => console.error('Error fetching data:', error));\n                    observer.disconnect();\n                  }\n                },\n                { threshold: 0.1 }\n              );\n      \n              if (ref.current) {\n                observer.observe(ref.current);\n              }\n      \n              return () => observer.disconnect();\n            }, []);\n      \n            return (\n              <div ref={ref}>\n                {data ? <div>Data: {JSON.stringify(data)}</div> : <div>Loading...</div>}\n              </div>\n            );\n          }\n      \n          export default LazyLoadComponent;\n          ",
       "imp": "V-Imp"
-    },
-    {
-      "id": 1723011030634,
-      "title": "add in react 1",
-      "content": "content",
-      "imp": "Imp",
-      "example": "example"
     }
   ],
   "NotesAngular": [
     {
-      "id": 1723013335757,
-      "title": "angular",
-      "content": "add",
-      "imp": "Imp",
-      "example": "example"
-    },
-    {
       "id": 1723013388459,
-      "title": "angular2",
-      "content": "add",
+      "title": "Change the underlying component CSS base class name and modifier class names prefix. This is an escape hatch for working with heavily customized bootstrap css.",
+      "content": "Change the underlying component CSS base class name and modifier class names prefix. This is an escape hatch for working with heavily customized bootstrap css.",
       "imp": "Imp",
-      "example": "some"
+      "example": " // Functional Component\n          function Greeting(props) {\n            return <h1>Hello, {props.name}</h1>;\n          }\n  \n          // Class Component\n          class Greeting extends React.Component {\n            render() {\n              return <h1>Hello, {this.props.name}</h1>;\n            }\n          }"
     }
   ],
   "NotesReactNative": [
     {
       "id": 1723007043472,
-      "title": "add some example qustion in react",
+      "title": "add some example qustion in react upate",
       "content": "answer",
       "imp": "V-Imp",
       "example": "example"
@@ -160,13 +147,6 @@ module.exports = {
       "title": "add some example qustion in react",
       "content": "answer",
       "imp": "V-Imp",
-      "example": "example"
-    },
-    {
-      "id": 1723007207896,
-      "title": "add some example qustion in react",
-      "content": "answer",
-      "imp": "Imp",
       "example": "example"
     }
   ],

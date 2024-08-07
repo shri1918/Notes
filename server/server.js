@@ -51,7 +51,6 @@ app.post('/updateImportance', (req, res) => {
     });
 });
 
-
 app.post('/createQuestion', authenticateToken, (req, res) => {
     const { title, content, example = '', arrayName } = req.body;
 
@@ -76,6 +75,60 @@ app.post('/createQuestion', authenticateToken, (req, res) => {
     } else {
         res.status(400).json({ message: 'Invalid array name' });
     }
+});
+
+// New endpoint to update a note
+app.post('/updateNote', authenticateToken, (req, res) => {
+    const { id, title, content, example, arrayName } = req.body;
+    if (!data[`Notes${arrayName}`]) {
+        return res.status(400).json({ message: 'Invalid array name' });
+    }
+    data[`Notes${arrayName}`] = data[`Notes${arrayName}`].map(note =>
+        note.id === id ? { ...note, title, content, example } : note
+    );
+    fs.writeFile(dataPath, `module.exports = ${JSON.stringify(data, null, 2)};`, (err) => {
+        if (err) {
+            console.error('Error writing to data.js file:', err);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+        res.json({
+            NotesReact: data.NotesReact,
+            NotesAngular: data.NotesAngular,
+            NotesReactNative: data.NotesReactNative
+        });
+    });
+});
+
+// New endpoint to delete a note
+app.delete('/deleteNote/:id', authenticateToken, (req, res) => {
+    const { id } = req.params;
+    let noteFound = false;
+
+    Object.keys(data).forEach(arrayName => {
+        if (arrayName.startsWith('Notes')) {
+            const initialLength = data[arrayName].length;
+            data[arrayName] = data[arrayName].filter(note => note.id !== parseInt(id));
+            if (data[arrayName].length < initialLength) {
+                noteFound = true;
+            }
+        }
+    });
+
+    if (!noteFound) {
+        return res.status(404).json({ message: 'Note not found' });
+    }
+
+    fs.writeFile(dataPath, `module.exports = ${JSON.stringify(data, null, 2)};`, (err) => {
+        if (err) {
+            console.error('Error writing to data.js file:', err);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+        res.json({
+            NotesReact: data.NotesReact,
+            NotesAngular: data.NotesAngular,
+            NotesReactNative: data.NotesReactNative
+        });
+    });
 });
 
 app.listen(port, () => {
