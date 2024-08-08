@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Dashboard from './Dashboard';
-import ReactNotes from './component/ReactNotes';
 import axios from 'axios';
-import AngularNotes from './component/AngularNotes';
-import ReactNativeNotes from './component/ReactNativeNotes';
-import Login from './Login';
-import Main from './Main';
 import ProtectedRoute from './ProtectedRoute';
 import apiConfig from './apiConfig';
+const Notes = lazy(()=> import('./component/Notes'));
+const Login = lazy(()=> import('./Login'));
+const Main = lazy(()=> import('./Main'));
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -27,11 +25,8 @@ const App = () => {
   }, []);
 
   const updateNoteImportance = (id, newImportance, arrayName) => {
-    console.log('Start UpdateNotes');
-    
     axios.post(`${apiConfig.baseURL}${apiConfig.endpoints.updateImportance}`, { id, newImportance, arrayName })
       .then(response => {
-        console.log('Update Importance Response:', response);
         if (arrayName === 'React') {
           setNotes(response.data.NotesReact);
         } else if (arrayName === 'Angular') {
@@ -44,20 +39,18 @@ const App = () => {
         console.error('Error updating importance or fetching notes:', error);
       });
   };
-  
-
   return (
     <Router>
-      <div>
+      <Suspense fallback={<div>Loading...</div>}>
         <Dashboard />
         <Routes>
-          <Route path="/" element={<ReactNotes notes={notes} updateNoteImportance={updateNoteImportance} />} />
-          <Route path="/angularNotes" element={<AngularNotes notes={notesAngular} updateNoteImportance={updateNoteImportance} />} />
-          <Route path="/reactNativeNotes" element={<ReactNativeNotes notes={notesReactNative} updateNoteImportance={updateNoteImportance} />} />
+          <Route path="/" element={<Notes notes={notes} updateNoteImportance={updateNoteImportance} noteType="React" />} />
+          <Route path="/angularNotes" element={<Notes notes={notesAngular} updateNoteImportance={updateNoteImportance} noteType="Angular" />} />
+          <Route path="/reactNativeNotes" element={<Notes notes={notesReactNative} updateNoteImportance={updateNoteImportance} noteType="ReactNative" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/main" element={<ProtectedRoute><Main /></ProtectedRoute>} />
         </Routes>
-      </div>
+      </Suspense>
     </Router>
   );
 };

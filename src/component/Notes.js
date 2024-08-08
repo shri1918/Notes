@@ -3,12 +3,11 @@ import Accordion from 'react-bootstrap/Accordion';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import '../App.css';
 import { FaStar, FaEdit, FaTrashAlt } from "react-icons/fa";
 import { GoDot } from "react-icons/go";
 import apiConfig from '../apiConfig';
 
-export default function ReactNativeNotes({ notes, updateNoteImportance, editNote, deleteNote }) {
+export default function Notes({ notes, updateNoteImportance, noteType }) {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentNote, setCurrentNote] = useState(null);
@@ -19,7 +18,7 @@ export default function ReactNativeNotes({ notes, updateNoteImportance, editNote
 
   const handleImportanceClick = (note) => {
     const newImportance = note.imp === 'V-Imp' ? 'Imp' : 'V-Imp';
-    updateNoteImportance(note.id, newImportance, 'ReactNative');
+    updateNoteImportance(note.id, newImportance, noteType);
     console.log('status', newImportance);
   };
 
@@ -40,9 +39,9 @@ export default function ReactNativeNotes({ notes, updateNoteImportance, editNote
       title: editedTitle,
       content: editedContent,
       example: editedExample,
-      arrayName: 'ReactNative', // Adjust according to your note type
+      arrayName: noteType,
     };
-  
+
     const response = await fetch(`${apiConfig.baseURL}${apiConfig.endpoints.updateNote}`, {
       method: 'POST',
       headers: {
@@ -51,16 +50,15 @@ export default function ReactNativeNotes({ notes, updateNoteImportance, editNote
       },
       body: JSON.stringify(updatedNote),
     });
-  
+
     if (response.ok) {
-      updateNoteImportance(updatedNote.id, IMP, 'ReactNative');
+      updateNoteImportance(updatedNote.id, IMP, noteType);
       setShowEditModal(false);
     } else {
-      // Handle error
       console.error('Failed to update note');
     }
   };
-  
+
   const handleDeleteConfirm = async () => {
     const response = await fetch(`${apiConfig.baseURL}${apiConfig.endpoints.deleteNote}${currentNote.id}`, {
       method: 'DELETE',
@@ -68,17 +66,14 @@ export default function ReactNativeNotes({ notes, updateNoteImportance, editNote
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
     });
-  
+
     if (response.ok) {
-      updateNoteImportance(currentNote.id, IMP, 'ReactNative');
-      // Handle success (e.g., update local state)
+      updateNoteImportance(currentNote.id, IMP, noteType);
       setShowDeleteModal(false);
     } else {
-      // Handle error
       console.error('Failed to delete note');
     }
   };
-  
 
   const handleDeleteClick = (note) => {
     setCurrentNote(note);
@@ -98,7 +93,7 @@ export default function ReactNativeNotes({ notes, updateNoteImportance, editNote
             </Accordion.Header>
             <Accordion.Body>
               <div className="d-flex justify-content-between">
-                <div>{note.content}</div>
+                <div style={{ width: token !== '' ? '80%' : '' }}>{note.content}</div>
                 {token && (
                   <div>
                     <FaEdit style={{ cursor: 'pointer' }} onClick={() => handleEditClick(note)} className="me-2" />

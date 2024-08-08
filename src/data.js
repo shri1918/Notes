@@ -1,10 +1,17 @@
 module.exports = {
   "NotesReact": [
     {
+      "id": 21,
+      "title": "How many types we call API in react ?",
+      "content": "Using fetch API,  Using Axios,  Using async/await with fetch Using useEffect for side-effects",
+      "imp": "Imp",
+      "example": "\n          //The fetch API is a built-in JavaScript function for making network requests.\n          useEffect(() => {\n          fetch('https://api.example.com/data')\n          .then(response => response.json())\n          .then(data => setData(data)) \n          .catch(error => console.error('Error:', error));\n          }, []);\n\n\n           \n          //Axios is a popular third-party library for making HTTP requests.useEffect(() => {\n          axios.get('https://api.example.com/data')\n          .then(response => setData(response.data))\n          .catch(error => console.error('Error:', error));\n          }, []);\n\n\n           \n          //Using async/await makes the code more readable and cleaner.\n            useEffect(() => {\n          const fetchData = async () => {\n          try {\n          const response = await fetch('https://api.example.com/data');\n          const result = await response.json();\n          setData(result);\n          } catch (error) {\n          console.error('Error:', error);\n          }\n          };\n          \n          fetchData();\n          }, []);"
+    },
+    {
       "id": 1,
       "title": "What is React?",
       "content": "React is a JavaScript library created by Facebook. React is a User Interface (UI) library. React is a tool for building UI components.",
-      "imp": "",
+      "imp": "Imp",
       "example": "add some example "
     },
     {
@@ -128,7 +135,7 @@ module.exports = {
   "NotesAngular": [
     {
       "id": 1723013388459,
-      "title": "Change the underlying component CSS base class name and modifier class names prefix. This is an escape hatch for working with heavily customized bootstrap css.",
+      "title": "we change the qustion in angular",
       "content": "Change the underlying component CSS base class name and modifier class names prefix. This is an escape hatch for working with heavily customized bootstrap css.",
       "imp": "Imp",
       "example": " // Functional Component\n          function Greeting(props) {\n            return <h1>Hello, {props.name}</h1>;\n          }\n  \n          // Class Component\n          class Greeting extends React.Component {\n            render() {\n              return <h1>Hello, {this.props.name}</h1>;\n            }\n          }"
